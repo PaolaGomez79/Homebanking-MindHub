@@ -5,7 +5,8 @@ Vue.createApp({
             firstName: "",
             lastName: "",
             outPut: "",
-            clients: []
+            clients: [],
+            loading:false
         }
     },
     created() {
@@ -13,16 +14,31 @@ Vue.createApp({
     },
     methods: {
         // load and display JSON sent by server for /clients
-        loadData() {
-            axios.get("/clients")
+        async loadData() {
+            try {
+                this.loading= true;
+                const response = await axios.get("/api/clients");
+                console.log(response)
+                this.outPut = response.data;
+                 console.log(response.data)
+                //this.clients = response.data._embedded.clients;
+                this.clients = response.data;
+                console.log(response.data._embedded.clients)
+            } catch(error) {
+                console.log("Error loading clients: " + error);
+                //alert("Error loading clients: " + error);
+            } finally {
+                this.loading = false; // Ocultar el estado de carga
+            }
+            /*axios.get("/api/clients")
                 .then((response) => {
                     // handle success
                     this.outPut = response.data;
                     this.clients = response.data._embedded.clients;
-                })
-                .catch((error) => {
+                })*/
+               /* .catch((error) => {
                     alert("Error loading clients: " + error)
-                })
+                })*/
         },
         // handler for when user clicks add client
         addClient() {
@@ -33,7 +49,7 @@ Vue.createApp({
         // code to post a new client using AJAX
         // on success, reload and display the updated data from the server
         postClient(email, firstName, lastName) {
-            axios.post("/clients", { "email": email, "firstName": firstName, "lastName": lastName })
+            axios.post("/api/clients", { "email": email, "firstName": firstName, "lastName": lastName })
                 .then((response) => {
                     // handle success
                     this.loadData();
