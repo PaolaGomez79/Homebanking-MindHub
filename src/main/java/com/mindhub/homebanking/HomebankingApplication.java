@@ -2,8 +2,11 @@ package com.mindhub.homebanking;
 
 import com.mindhub.homebanking.models.Account;
 import com.mindhub.homebanking.models.Client;
+import com.mindhub.homebanking.models.Transaction;
+import com.mindhub.homebanking.models.TransactionType;
 import com.mindhub.homebanking.repositories.AccountRepository;
 import com.mindhub.homebanking.repositories.ClientRepository;
+import com.mindhub.homebanking.repositories.TransactionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -11,6 +14,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -22,7 +26,7 @@ public class HomebankingApplication {
 	}
 
 	@Bean
-	public CommandLineRunner initData(ClientRepository clientRepository, AccountRepository accountRepository) {
+	public CommandLineRunner initData(ClientRepository clientRepository, AccountRepository accountRepository, TransactionRepository transactionRepository) {
 		return (args) -> {
 
 			Client client1 = new Client("Melba", "Morel","melba@mindhub.com");
@@ -48,6 +52,26 @@ public class HomebankingApplication {
 
 			clientRepository.save(client1);
 			clientRepository.save(client2);
+
+			Transaction transaction1 = new Transaction(TransactionType.CREDIT,2000.0,"Acredito", LocalDateTime.now());
+			Transaction transaction2 = new Transaction(TransactionType.DEBIT,-1000.0,"Retiro",LocalDateTime.now());
+			Transaction transaction3 = new Transaction(TransactionType.DEBIT,-2000.0,"Retiro",LocalDateTime.now());
+
+			account1.addTransaction(transaction1);
+			account2.addTransaction(transaction2);
+			account3.addTransaction(transaction3);
+
+			transactionRepository.save(transaction1);
+			transactionRepository.save(transaction2);
+			transactionRepository.save(transaction3);
+
+			accountRepository.save(account1);
+			accountRepository.save(account2);
+			accountRepository.save(account3);
+
+			/*clientRepository.save(client1);
+			clientRepository.save(client2);*/
+
 
 		};
 	}

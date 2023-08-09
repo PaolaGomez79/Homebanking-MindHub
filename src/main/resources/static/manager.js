@@ -5,8 +5,7 @@ Vue.createApp({
             firstName: "",
             lastName: "",
             outPut: "",
-            clients: [],
-            loading:false
+            clients: []
         }
     },
     created() {
@@ -14,31 +13,16 @@ Vue.createApp({
     },
     methods: {
         // load and display JSON sent by server for /clients
-        async loadData() {
-            try {
-                this.loading= true;
-                const response = await axios.get("/api/clients");
-                console.log(response)
-                this.outPut = response.data;
-                 console.log(response.data)
-                //this.clients = response.data._embedded.clients;
-                this.clients = response.data;
-                console.log(response.data._embedded.clients)
-            } catch(error) {
-                console.log("Error loading clients: " + error);
-                //alert("Error loading clients: " + error);
-            } finally {
-                this.loading = false; // Ocultar el estado de carga
-            }
-            /*axios.get("/api/clients")
+        loadData() {
+            axios.get("/api/clients")
                 .then((response) => {
                     // handle success
                     this.outPut = response.data;
                     this.clients = response.data._embedded.clients;
-                })*/
-               /* .catch((error) => {
+                })
+                .catch((error) => {
                     alert("Error loading clients: " + error)
-                })*/
+                })
         },
         // handler for when user clicks add client
         addClient() {

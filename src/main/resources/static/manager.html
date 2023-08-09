@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:v-on="http://www.w3.org/1999/xhtml">
+<html lang="en">
 
 <head>
     <meta charset="UTF-8">
@@ -15,7 +15,6 @@
         }
     </style>
     <div id="app" class="container" v-cloak>
-        <div v-if="loading" class="text-center">Loading...</div>
         <div class="row">
             <div class="col">
                 <h1>Client Manager</h1>
@@ -46,7 +45,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr v-for="client in clients" :key="client.id">
+                            <tr v-for="client in clients">
                                 <td>{{ client.firstName }}</td>
                                 <td>{{ client.lastName }}</td>
                                 <td>{{ client.email }}</td>
